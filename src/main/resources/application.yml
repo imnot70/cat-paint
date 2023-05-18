@@ -1,0 +1,11 @@
+server:
+  port: 8080
+
+file:
+  path:
+    input: C:\Users\imnot\Code\temp\cat-paint\file\input
+    output: C:\Users\imnot\Code\temp\cat-paint\file\output
+
+stable-diffusion:
+  host: 127.0.0.1
+  port: 7860

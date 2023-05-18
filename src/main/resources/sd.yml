@@ -1,0 +1,8 @@
+user: /user
+login-check: /login_check
+token: /token
+app-id: /app_id
+login: /login
+main: /
+config: /config
+
