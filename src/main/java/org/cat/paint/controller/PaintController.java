@@ -1,6 +1,5 @@
 package org.cat.paint.controller;
 
-import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import org.cat.paint.beans.bo.Txt2ImgBo;
@@ -25,6 +24,28 @@ public class PaintController extends BaseController{
     private Config config;
     @Autowired
     private RestTemplateClient client;
+
+    @PostMapping("t2i")
+    public Result<String> txt2Img(@RequestBody Txt2ImgBo bo){
+        Result<String> result = new Result<>();
+
+        String s = client.postForString("http://localhost:7860"+ SdApiEnum.TEXT2IMG.uri(), bo);
+        JSONObject resultObject = JSONObject.parseObject(s);
+        JSONArray images = resultObject.getJSONArray("images");
+        String imageStr = images.toString();
+        if(imageStr == null || imageStr.trim().length() == 0){
+            result.setCode("1000");
+            result.setMsg("failed");
+            return result;
+        }else{
+            imageStr = imageStr.substring(2,imageStr.length()-2);
+        }
+
+
+        result.setCode("0000");
+        result.setMsg("ok");
+        return result;
+    }
 
     @PostMapping("/test")
     public Result<ImageVo> test(@RequestBody Txt2ImgBo bo) {
