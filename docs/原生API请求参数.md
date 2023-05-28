@@ -70,3 +70,15 @@
   |initial_noise_multiplier|暂不明|int||||
   |include_init_images|暂不明|bool||||
 
+## CheckPoints列表
+- path：/sdapi/v1/sd-models
+- 参数：无参数
+
+## 进度查询
+- path：/internal/progress
+- 参数：
+  |参数名|说明|类型|简易模式提供|高级模式提供|建议|
+  |-|-|-|-|-|-|
+  |id_task|任务id|String||||
+  |id_live_preview|实时预览|int||||
+
