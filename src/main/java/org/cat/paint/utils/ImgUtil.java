@@ -8,6 +8,8 @@ import java.util.Base64;
 
 public class ImgUtil {
 
+
+
     public static void text2Jpg(String filePath,String source){
         try(OutputStream out = Files.newOutputStream(Paths.get(filePath))) {
             String base64 = source.substring(source.indexOf(",", 1) + 1);

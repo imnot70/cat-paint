@@ -20,6 +20,9 @@ public class Config {
     @Value("${file.path.output}")
     private String outPutFilePath;
 
+    @Value("${img.allow.nsfw}")
+    private boolean allowNsfw;
+
     @Bean
     public RestTemplate restTemplate(){
         return new RestTemplate();
