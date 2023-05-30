@@ -2,14 +2,15 @@ package org.cat.paint.controller;
 
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
-import org.cat.paint.beans.bo.ExpertTxt2ImgBo;
-import org.cat.paint.beans.bo.SimpleTxt2ImgBo;
+import org.cat.paint.beans.bo.Txt2ImgExpertBo;
+import org.cat.paint.beans.bo.Txt2ImgSimpleBo;
 import org.cat.paint.beans.vo.CheckPointVo;
 import org.cat.paint.beans.vo.ImageVo;
 import org.cat.paint.beans.vo.Result;
 import org.cat.paint.component.RestTemplateClient;
 import org.cat.paint.config.Config;
 import org.cat.paint.enums.SdApiEnum;
+import org.cat.paint.service.ImageService;
 import org.cat.paint.utils.ImgUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,14 +27,19 @@ public class PaintController extends BaseController{
     @Autowired
     private RestTemplateClient client;
 
+    private ImageService imageService;
+
 
     @PostMapping("/simple/txt2img")
-    public Result<String> txt2ImgSimple(@RequestBody SimpleTxt2ImgBo bo){
+    public Result<ImageVo> txt2ImgSimple(@RequestBody Txt2ImgSimpleBo bo){
+
+
+
         return null;
     }
 
     @PostMapping("/expert/txt2img")
-    public Result<String> txt2ImgExpert(@RequestBody ExpertTxt2ImgBo bo){
+    public Result<String> txt2ImgExpert(@RequestBody Txt2ImgExpertBo bo){
         Result<String> result = new Result<>();
 
         String s = client.postForString("http://localhost:7860"+ SdApiEnum.TEXT2IMG.uri(), bo);
@@ -66,7 +72,7 @@ public class PaintController extends BaseController{
     }
 
     @PostMapping("/test")
-    public Result<ImageVo> test(@RequestBody ExpertTxt2ImgBo bo) {
+    public Result<ImageVo> test(@RequestBody Txt2ImgExpertBo bo) {
 
         Result<ImageVo> result = new Result<>();
         try {
@@ -84,7 +90,7 @@ public class PaintController extends BaseController{
             }else{
                 imageStr = imageStr.substring(2,imageStr.length()-2);
             }
-            String outputPath = config.getOutPutFilePath() +"/"+ "a.png";
+            String outputPath = config.getOutPutFilePath() +"/"+ "a" + ImgUtil.IMG_EXT_NAME;
             ImgUtil.text2Jpg(outputPath,imageStr);
             ImageVo vo = new ImageVo();
             vo.setUri(HTTP_PREFIX + outputPath);

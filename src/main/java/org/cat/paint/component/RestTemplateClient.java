@@ -1,6 +1,6 @@
 package org.cat.paint.component;
 
-import org.cat.paint.beans.bo.ExpertTxt2ImgBo;
+import org.cat.paint.beans.bo.Txt2ImgExpertBo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.MediaType;
@@ -18,7 +18,7 @@ public class RestTemplateClient {
     @Autowired
     private RestTemplate template;
 
-    public String postForString(String url, ExpertTxt2ImgBo bo){
+    public String postForString(String url, Txt2ImgExpertBo bo){
 
 //        HttpHeaders headers = new HttpHeaders();
 //        headers.setContentType(MediaType.APPLICATION_JSON);
@@ -27,7 +27,7 @@ public class RestTemplateClient {
         headers.put("Content-Type",Arrays.asList(MediaType.APPLICATION_JSON_VALUE));
         headers.put("Accept",Arrays.asList(MediaType.APPLICATION_JSON_VALUE));
 
-        HttpEntity<ExpertTxt2ImgBo> reqEntity = new HttpEntity<>(bo,headers);
+        HttpEntity<Txt2ImgExpertBo> reqEntity = new HttpEntity<>(bo,headers);
 
         ResponseEntity<String> result = template.postForEntity(url, reqEntity, String.class);
         return result.getBody();

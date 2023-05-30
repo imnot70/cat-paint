@@ -1,17 +1,17 @@
 package org.cat.paint.beans.bo;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
+/**
+ * 文生图类的接口基类
+ */
 @EqualsAndHashCode(callSuper = true)
-@Builder
 @Data
-public class ExpertTxt2ImgBo extends GenerateImgBo{
+public abstract class Txt2ImgBo extends ImgBo {
 
-    private int steps;
 
-    private long seed;
+
 }
