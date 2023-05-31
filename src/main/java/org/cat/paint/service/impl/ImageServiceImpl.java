@@ -32,8 +32,13 @@ public class ImageServiceImpl implements ImageService {
         return null;
     }
 
+    private SdApiTxt2ImgDto createDto(){
+        return null;
+    }
+
     @Override
     public ImageVo img2Img(Img2ImgBo bo) {
+        // TODO
         return null;
     }
 }
