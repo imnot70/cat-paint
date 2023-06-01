@@ -9,6 +9,7 @@ import org.cat.paint.beans.vo.ImageVo;
 import org.cat.paint.beans.vo.Result;
 import org.cat.paint.component.RestTemplateClient;
 import org.cat.paint.config.Config;
+import org.cat.paint.constant.StrConst;
 import org.cat.paint.enums.SdApiEnum;
 import org.cat.paint.service.ImageService;
 import org.cat.paint.utils.ImgUtil;
@@ -21,7 +22,7 @@ import java.util.List;
 @RestController
 public class PaintController extends BaseController{
 
-    private static final String HTTP_PREFIX = "http://";
+    private static final String HTTP_PREFIX = RestTemplateClient.HTTP_PREFIX;
     @Autowired
     private Config config;
     @Autowired
@@ -29,13 +30,11 @@ public class PaintController extends BaseController{
 
     private ImageService imageService;
 
-
     @PostMapping("/simple/txt2img")
     public Result<ImageVo> txt2ImgSimple(@RequestBody Txt2ImgSimpleBo bo){
-
-
-
-        return null;
+        // TODO 参数检验
+        ImageVo imageVo = imageService.txt2Img(bo);
+        return success(imageVo);
     }
 
     @PostMapping("/expert/txt2img")
@@ -90,7 +89,7 @@ public class PaintController extends BaseController{
             }else{
                 imageStr = imageStr.substring(2,imageStr.length()-2);
             }
-            String outputPath = config.getOutPutFilePath() +"/"+ "a" + ImgUtil.IMG_EXT_NAME;
+            String outputPath = config.getOutPutFilePath() +"/"+ "a" + StrConst.IMG_EXT_NAME;
             ImgUtil.text2Jpg(outputPath,imageStr);
             ImageVo vo = new ImageVo();
             vo.setUri(HTTP_PREFIX + outputPath);

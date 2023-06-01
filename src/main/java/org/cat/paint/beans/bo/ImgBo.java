@@ -2,6 +2,7 @@ package org.cat.paint.beans.bo;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.cat.paint.constant.StrConst;
 
 import java.util.List;
 
@@ -26,5 +27,9 @@ public abstract class ImgBo extends BaseBo{
      * prompt
      */
     private List<String> prompts;
+
+    public String getPrompt(){
+        return String.join(StrConst.STR_COMMA,prompts);
+    }
 
 }

@@ -13,4 +13,12 @@ public class Txt2ImgExpertBo extends Txt2ImgBo {
     private int steps;
 
     private long seed;
+
+    private double denoisingStrength;
+
+    private String samplerName;
+
+    private double cfgScale;
+
+    private boolean restoreFace;
 }

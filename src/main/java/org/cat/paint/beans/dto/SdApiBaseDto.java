@@ -36,31 +36,31 @@ public class SdApiBaseDto {
      * 随机种子
      */
     @JsonProperty("seed")
-    private long seed;
+    private Long seed;
 
     /**
      * 子种子
      */
     @JsonProperty("subseed")
-    private long subSeed;
+    private Long subSeed;
 
     /**
      * subseed_strength
      */
     @JsonProperty("subseed_strength")
-    private double subSeedStrength;
+    private Double subSeedStrength;
 
     /**
      * seed_resize_from_h
      */
     @JsonProperty("seed_resize_from_h")
-    private int seedResizeFromH;
+    private Integer seedResizeFromH;
 
     /**
      * seed_resize_from_w
      */
     @JsonProperty("seed_resize_from_w")
-    private int seedResizeFromW;
+    private Integer seedResizeFromW;
 
     @JsonProperty("restore_faces")
     private boolean restoreFaces;
@@ -78,7 +78,7 @@ public class SdApiBaseDto {
      * n_iter
      */
     @JsonProperty("n_iter")
-    private int niter;
+    private Integer niter;
 
     /**
      * 迭代步数

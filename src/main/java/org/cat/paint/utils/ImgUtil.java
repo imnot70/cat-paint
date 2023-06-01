@@ -2,6 +2,7 @@ package org.cat.paint.utils;
 
 import org.cat.paint.config.Config;
 import org.cat.paint.constant.ResConst;
+import org.cat.paint.constant.StrConst;
 import org.cat.paint.enums.AspectRatioEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,9 +20,7 @@ import java.util.*;
 @Component
 public class ImgUtil {
 
-    public static final String STR_COMMA = ",";
-    public static final String IMG_EXT_NAME = ".png";
-    public static final String IMG_NAME_PATTERN = "yyyyMMddHHmmss";
+
 
     private static Config config;
 
@@ -30,7 +29,7 @@ public class ImgUtil {
         config = conf;
     }
 
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern(IMG_NAME_PATTERN);
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern(StrConst.IMG_NAME_PATTERN);
 
     public static String taskId() {
         return UUID.randomUUID().toString().replace("-", "");
@@ -78,7 +77,7 @@ public class ImgUtil {
      */
     public static void text2Jpg(String filePath, String source) {
         try (OutputStream out = Files.newOutputStream(Paths.get(filePath))) {
-            String base64 = source.substring(source.indexOf(STR_COMMA, 1) + 1);
+            String base64 = source.substring(source.indexOf(StrConst.STR_COMMA, 1) + 1);
             Base64.Decoder decoder = Base64.getDecoder();
             byte[] imgBytes = decoder.decode(base64);
             for (int i = 0; i < imgBytes.length; ++i) {
@@ -101,7 +100,7 @@ public class ImgUtil {
      */
     public static String resolveImgToStr(File img) {
         String name = img.getName();
-        if (!name.endsWith(IMG_EXT_NAME)) {
+        if (!name.endsWith(StrConst.IMG_EXT_NAME)) {
             throw new RuntimeException("img format error");
         }
         // TODO
