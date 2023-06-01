@@ -1,5 +1,7 @@
 package org.cat.paint.component;
 
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
 import org.cat.paint.beans.bo.Txt2ImgExpertBo;
 import org.cat.paint.beans.dto.SdApiBaseDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,27 +24,14 @@ public class RestTemplateClient {
     @Autowired
     private RestTemplate template;
 
-    public String postForString(String url, Txt2ImgExpertBo bo){
-        MultiValueMap<String,String> headers = new LinkedMultiValueMap<>();
-        headers.put("Content-Type", Collections.singletonList(MediaType.APPLICATION_JSON_VALUE));
-        headers.put("Accept", Collections.singletonList(MediaType.APPLICATION_JSON_VALUE));
-
-        HttpEntity<Txt2ImgExpertBo> reqEntity = new HttpEntity<>(bo,headers);
-
-        ResponseEntity<String> result = template.postForEntity(url, reqEntity, String.class);
-        return result.getBody();
-    }
-
     public String postForString(String url, SdApiBaseDto bo){
         MultiValueMap<String,String> headers = new LinkedMultiValueMap<>();
-        headers.put("Content-Type", Collections.singletonList(MediaType.APPLICATION_JSON_VALUE));
-        headers.put("Accept", Collections.singletonList(MediaType.APPLICATION_JSON_VALUE));
-
-        HttpEntity<SdApiBaseDto> reqEntity = new HttpEntity<>(bo,headers);
-
+        headers.add("Content-Type", MediaType.APPLICATION_JSON_VALUE);
+        headers.add("Accept", MediaType.APPLICATION_JSON_VALUE);
+        JSONObject jsonObject = JSON.parseObject(JSON.toJSONBytes(bo));
+        HttpEntity<JSONObject> reqEntity = new HttpEntity<>(jsonObject,headers);
         ResponseEntity<String> result = template.postForEntity(url, reqEntity, String.class);
         return result.getBody();
     }
-
 
 }

@@ -2,6 +2,7 @@ package org.cat.paint.controller;
 
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
+import lombok.extern.slf4j.Slf4j;
 import org.cat.paint.beans.bo.Txt2ImgExpertBo;
 import org.cat.paint.beans.bo.Txt2ImgSimpleBo;
 import org.cat.paint.beans.vo.CheckPointVo;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RequestMapping("/api/v1/paint")
 @RestController
 public class PaintController extends BaseController{
@@ -27,7 +29,7 @@ public class PaintController extends BaseController{
     private Config config;
     @Autowired
     private RestTemplateClient client;
-
+    @Autowired
     private ImageService imageService;
 
     @PostMapping("/simple/txt2img")

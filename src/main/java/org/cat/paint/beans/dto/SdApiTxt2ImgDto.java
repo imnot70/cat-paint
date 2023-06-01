@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.cat.paint.beans.bo.Txt2ImgExpertBo;
+import org.cat.paint.beans.bo.Txt2ImgSimpleBo;
 import org.cat.paint.utils.ImgUtil;
 
 import java.util.List;
@@ -12,14 +13,13 @@ import java.util.List;
 @Data
 public class SdApiTxt2ImgDto extends SdApiBaseDto {
 
-    public static SdApiTxt2ImgDto getInstance(String prompt) {
-        SdApiTxt2ImgDto instance = defaultInstance();
-        instance.setPrompt(prompt);
+    public static SdApiTxt2ImgDto getInstance(Txt2ImgSimpleBo bo) {
+        SdApiTxt2ImgDto instance = defaultInstance(bo.getAspectRatio());
+        instance.setPrompt(bo.getPrompt());
         return instance;
     }
 
     public static SdApiTxt2ImgDto getInstance(Txt2ImgExpertBo bo) {
-        List<Integer> ratio = ImgUtil.calculateRes(bo.getAspectRatio());
         return getInstance(bo.getPrompt()
                 , bo.getSeed()
                 , bo.getDenoisingStrength()
@@ -27,8 +27,7 @@ public class SdApiTxt2ImgDto extends SdApiBaseDto {
                 , bo.getSteps()
                 , bo.getCfgScale()
                 , bo.isRestoreFace()
-                , ratio.get(0)
-                , ratio.get(1));
+                , bo.getAspectRatio());
     }
 
     public static SdApiTxt2ImgDto getInstance(String prompt
@@ -38,9 +37,8 @@ public class SdApiTxt2ImgDto extends SdApiBaseDto {
             , int step
             , double cfgScale
             , boolean restoreFace
-            , int height
-            , int width) {
-        SdApiTxt2ImgDto instance = defaultInstance();
+            , int aspectRatioType) {
+        SdApiTxt2ImgDto instance = defaultInstance(aspectRatioType);
         instance.setPrompt(prompt);
         instance.setSeed(seed);
         instance.setDenoisingStrength(denoisingStrength);
@@ -48,16 +46,20 @@ public class SdApiTxt2ImgDto extends SdApiBaseDto {
         instance.setSteps(step);
         instance.setCfgScale(cfgScale);
         instance.setRestoreFaces(restoreFace);
-        instance.setHeight(height);
-        instance.setWidth(width);
         return instance;
     }
 
-    public static SdApiTxt2ImgDto defaultInstance() {
+    public static SdApiTxt2ImgDto defaultInstance(int aspectRatioType) {
+        List<Integer> ratio = ImgUtil.calculateRes(aspectRatioType);
         SdApiTxt2ImgDto instance = new SdApiTxt2ImgDto();
         instance.setBatchSize(1);
         instance.setTiling(false);
         instance.setRestoreFaces(false);
+        instance.setWidth(ratio.get(0));
+        instance.setHeight(ratio.get(1));
+        instance.setCfgScale(7.0);
+        instance.setSteps(20);
+        instance.setDenoisingStrength(0.75);
         // TODO 设置默认的反向提示词
         instance.setNegativePrompt(null);
 //        instance.setStyles(null);

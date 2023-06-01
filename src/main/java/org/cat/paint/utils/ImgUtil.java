@@ -1,9 +1,12 @@
 package org.cat.paint.utils;
 
+import lombok.extern.slf4j.Slf4j;
 import org.cat.paint.config.Config;
 import org.cat.paint.constant.ResConst;
 import org.cat.paint.constant.StrConst;
 import org.cat.paint.enums.AspectRatioEnum;
+import org.cat.paint.enums.RespCode;
+import org.cat.paint.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,12 +17,14 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
+import java.util.UUID;
 
-
+@Slf4j
 @Component
 public class ImgUtil {
-
 
 
     private static Config config;
@@ -42,16 +47,11 @@ public class ImgUtil {
      * @return 文件夹路径
      */
     public static String getDirPath(long userId) {
-        String dirPath = config.getOutPutFilePath() + File.pathSeparator + userId + File.pathSeparator;
-        File file = new File(dirPath);
-        if (!file.exists()) {
-            try {
-                boolean createResult = file.createNewFile();
-                if (!createResult) {
-                    throw new RuntimeException("create directory [" + file.getPath() + "] error");
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+        String dirPath = config.getOutPutFilePath() + File.separator + userId + File.separator;
+        File dir = new File(dirPath);
+        if(!dir.exists()) {
+            if (!dir.mkdirs()) {
+                throw new BusinessException(RespCode.FAILED.getCode(), "create dir failed,dir:" + dirPath);
             }
         }
         return dirPath;
@@ -66,7 +66,7 @@ public class ImgUtil {
     public static String getFilePath(long userId) {
         String dirPath = getDirPath(userId);
         String timeStr = FORMATTER.format(LocalDateTime.now());
-        return dirPath + timeStr;
+        return dirPath + timeStr + StrConst.IMG_EXT_NAME;
     }
 
     /**
@@ -76,6 +76,17 @@ public class ImgUtil {
      * @param source   字符串
      */
     public static void convertTxtToImg(String filePath, String source) {
+        File file = new File(filePath);
+        if (!file.exists()) {
+            try {
+                if (!file.createNewFile()) {
+                    throw new BusinessException(RespCode.FAILED.getCode(), "create image failed,file:" + filePath);
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+        }
         try (OutputStream out = Files.newOutputStream(Paths.get(filePath))) {
             String base64 = source.substring(source.indexOf(StrConst.STR_COMMA, 1) + 1);
             Base64.Decoder decoder = Base64.getDecoder();
@@ -114,8 +125,9 @@ public class ImgUtil {
 
     /**
      * 返回一个Integer列表，只有两个元素，第一个为横向分辨率，第二个为纵高分辨率
-     * @param type  图片比例类型
-     * @return  图片分辨率
+     *
+     * @param type 图片比例类型
+     * @return 图片分辨率
      */
     public static List<Integer> calculateRes(int type) {
         Double aspectRatio = AspectRatioEnum.widthHeightRatio(type);

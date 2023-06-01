@@ -1,11 +1,13 @@
 package org.cat.paint.service.impl;
 
+import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.cat.paint.beans.bo.Img2ImgBo;
 import org.cat.paint.beans.bo.Txt2ImgBo;
 import org.cat.paint.beans.bo.Txt2ImgExpertBo;
+import org.cat.paint.beans.bo.Txt2ImgSimpleBo;
 import org.cat.paint.beans.dto.ResizeDto;
 import org.cat.paint.beans.dto.SdApiTxt2ImgDto;
 import org.cat.paint.beans.vo.ImageVo;
@@ -20,6 +22,7 @@ import org.cat.paint.utils.ImgUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,12 +39,11 @@ public class ImageServiceImpl implements ImageService {
     public ImageVo txt2Img(Txt2ImgBo bo) {
         SdApiTxt2ImgDto dto = (bo instanceof Txt2ImgExpertBo)
                 ? SdApiTxt2ImgDto.getInstance((Txt2ImgExpertBo) bo)
-                : SdApiTxt2ImgDto.getInstance(bo.getPrompt());
+                : SdApiTxt2ImgDto.getInstance((Txt2ImgSimpleBo) bo);
 
         Map<String,String> overrideSettings = new HashMap<>();
         overrideSettings.put("sd_model_checkpoint",bo.getCheckPointName());
         dto.setOverrideSettings(overrideSettings);
-
         ImageVo result = new ImageVo();
         String url = RestTemplateClient.HTTP_PREFIX + config.getSdHost()
                 + StrConst.STR_COLON + config.getSdPort() + SdApiEnum.TEXT2IMG.uri();
@@ -64,8 +66,6 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public ImageVo resize(ResizeDto dto) {
-
-
 
         return null;
     }
