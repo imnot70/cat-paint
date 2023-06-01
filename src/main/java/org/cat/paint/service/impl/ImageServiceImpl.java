@@ -6,10 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.cat.paint.beans.bo.Img2ImgBo;
 import org.cat.paint.beans.bo.Txt2ImgBo;
 import org.cat.paint.beans.bo.Txt2ImgExpertBo;
-import org.cat.paint.beans.bo.Txt2ImgSimpleBo;
+import org.cat.paint.beans.dto.ResizeDto;
 import org.cat.paint.beans.dto.SdApiTxt2ImgDto;
 import org.cat.paint.beans.vo.ImageVo;
-import org.cat.paint.beans.vo.Result;
 import org.cat.paint.component.RestTemplateClient;
 import org.cat.paint.config.Config;
 import org.cat.paint.constant.StrConst;
@@ -44,7 +43,8 @@ public class ImageServiceImpl implements ImageService {
         dto.setOverrideSettings(overrideSettings);
 
         ImageVo result = new ImageVo();
-        String url = RestTemplateClient.HTTP_PREFIX + config.getSdHost() + StrConst.STR_COLON + config.getSdPort() + SdApiEnum.TEXT2IMG.uri();
+        String url = RestTemplateClient.HTTP_PREFIX + config.getSdHost()
+                + StrConst.STR_COLON + config.getSdPort() + SdApiEnum.TEXT2IMG.uri();
         String generateResult = client.postForString(url, dto);
         JSONObject resultObject = JSONObject.parseObject(generateResult);
         JSONArray images = resultObject.getJSONArray(StrConst.SD_ATTR_IMG);
@@ -57,10 +57,19 @@ public class ImageServiceImpl implements ImageService {
         }
         // FIXME userId
         String filePath = ImgUtil.getFilePath(10000L);
-        ImgUtil.text2Jpg(filePath,imageStr);
+        ImgUtil.convertTxtToImg(filePath,imageStr);
         result.setUri(filePath);
         return result;
     }
+
+    @Override
+    public ImageVo resize(ResizeDto dto) {
+
+
+
+        return null;
+    }
+
 
     @Override
     public ImageVo img2Img(Img2ImgBo bo) {

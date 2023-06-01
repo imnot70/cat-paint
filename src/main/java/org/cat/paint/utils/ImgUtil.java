@@ -75,7 +75,7 @@ public class ImgUtil {
      * @param filePath 文件路径
      * @param source   字符串
      */
-    public static void text2Jpg(String filePath, String source) {
+    public static void convertTxtToImg(String filePath, String source) {
         try (OutputStream out = Files.newOutputStream(Paths.get(filePath))) {
             String base64 = source.substring(source.indexOf(StrConst.STR_COMMA, 1) + 1);
             Base64.Decoder decoder = Base64.getDecoder();
