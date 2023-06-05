@@ -35,6 +35,7 @@ public class ImgUtil {
     }
 
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern(StrConst.IMG_NAME_PATTERN);
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(StrConst.TIME_PATTERN_DATE);
 
     public static String taskId() {
         return UUID.randomUUID().toString().replace("-", "");
@@ -47,9 +48,11 @@ public class ImgUtil {
      * @return 文件夹路径
      */
     public static String getDirPath(long userId) {
-        String dirPath = config.getOutPutFilePath() + File.separator + userId + File.separator;
+        String dirPath = config.getOutPutFilePath() + File.separator
+                + userId + File.separator
+                + DATE_FORMATTER.format(LocalDateTime.now()) + File.separator;
         File dir = new File(dirPath);
-        if(!dir.exists()) {
+        if (!dir.exists()) {
             if (!dir.mkdirs()) {
                 throw new BusinessException(RespCode.FAILED.getCode(), "create dir failed,dir:" + dirPath);
             }

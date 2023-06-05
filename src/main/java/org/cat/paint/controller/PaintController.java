@@ -32,6 +32,15 @@ public class PaintController extends BaseController{
     @Autowired
     private ImageService imageService;
 
+    /**
+     * 获取checkpoints列表（不分页）
+     * @return  模型列表
+     */
+    @GetMapping("/models/ckpt")
+    public Result<List<CheckPointVo>> ckpts(){
+        return success(null);
+    }
+
     @PostMapping("/simple/txt2img")
     public Result<ImageVo> txt2ImgSimple(@RequestBody Txt2ImgSimpleBo bo){
         // TODO 参数检验

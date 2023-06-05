@@ -1,6 +1,5 @@
 package org.cat.paint.service.impl;
 
-import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +21,6 @@ import org.cat.paint.utils.ImgUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,7 +38,7 @@ public class ImageServiceImpl implements ImageService {
         SdApiTxt2ImgDto dto = (bo instanceof Txt2ImgExpertBo)
                 ? SdApiTxt2ImgDto.getInstance((Txt2ImgExpertBo) bo)
                 : SdApiTxt2ImgDto.getInstance((Txt2ImgSimpleBo) bo);
-
+        dto.setIdTask(ImgUtil.taskId());
         Map<String,String> overrideSettings = new HashMap<>();
         overrideSettings.put("sd_model_checkpoint",bo.getCheckPointName());
         dto.setOverrideSettings(overrideSettings);
@@ -50,6 +48,8 @@ public class ImageServiceImpl implements ImageService {
         String generateResult = client.postForString(url, dto);
         JSONObject resultObject = JSONObject.parseObject(generateResult);
         JSONArray images = resultObject.getJSONArray(StrConst.SD_ATTR_IMG);
+        resultObject.remove(StrConst.SD_ATTR_IMG);
+        System.out.println("result:" + JSONObject.toJSONString(resultObject));
         String imageStr = images.toString();
         if(imageStr == null || imageStr.trim().length() == 0){
             log.info("imgStr is empty,url:{}",url);

@@ -8,6 +8,9 @@ import java.util.Map;
 @Data
 public class SdApiBaseDto {
 
+    @JsonProperty("id_task")
+    private String idTask;
+
     /**
      * 降噪强度，生成图片时0.75，使用放大插件时0.2
      */
